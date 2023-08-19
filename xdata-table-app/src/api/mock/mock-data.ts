@@ -1,4 +1,4 @@
-import { IClient } from "src/app/utils/client.interface";
+import { IClient } from 'src/app/utils/client.interface';
 
 export const data: IClient[] = [
   {
@@ -8,7 +8,7 @@ export const data: IClient[] = [
     phoneNo: '+1 628 291 2098',
     companyName: 'Alphabet',
     address: '169 11th Street, 94103 San Francisco',
-    children: []
+    children: [],
   },
   {
     name: 'Marc Johnson',
@@ -17,7 +17,7 @@ export const data: IClient[] = [
     phoneNo: '+1 628 291 2098',
     companyName: 'Alphabet',
     address: ' 169 11th Street, 94103 San Francisco ads ad ss',
-    children: []
+    children: [],
   },
   {
     name: 'PiedPiper',
@@ -36,13 +36,33 @@ export const data: IClient[] = [
         address: '1 - 169 11th Street, 94103 San Francisco',
         children: [
           {
-            name: 'Children 21',
+            name: 'Children 2',
             type: 'company',
             email: '21 - someone@gmail.com',
             phoneNo: '21 - +1 628 291 2098',
             companyName: '21 -',
             address: '21 - 169 11th Street, 94103 San Francisco',
-            children: []
+            children: [
+              {
+                name: 'Children 3',
+                type: 'company',
+                email: '21 - someone@gmail.com',
+                phoneNo: '21 - +1 628 291 2098',
+                companyName: '21 -',
+                address: '21 - 169 11th Street, 94103 San Francisco',
+                children: [
+                  {
+                    name: 'Children 4',
+                    type: 'company',
+                    email: '21 - someone@gmail.com',
+                    phoneNo: '21 - +1 628 291 2098',
+                    companyName: '21 -',
+                    address: '21 - 169 11th Street, 94103 San Francisco',
+                    children: [],
+                  },
+                ],
+              },
+            ],
           },
           {
             name: 'Children 31',
@@ -51,9 +71,9 @@ export const data: IClient[] = [
             phoneNo: '31 - +1 628 291 2098',
             companyName: '31 -',
             address: '31 - 169 11th Street, 94103 San Francisco',
-            children: []
+            children: [],
           },
-        ]
+        ],
       },
       {
         name: 'Children 2',
@@ -70,7 +90,7 @@ export const data: IClient[] = [
             phoneNo: '21 - +1 628 291 2098',
             companyName: '21 -',
             address: '21 - 169 11th Street, 94103 San Francisco',
-            children: []
+            children: [],
           },
           {
             name: 'Children 31',
@@ -79,9 +99,9 @@ export const data: IClient[] = [
             phoneNo: '31 - +1 628 291 2098',
             companyName: '31 -',
             address: '31 - 169 11th Street, 94103 San Francisco',
-            children: []
+            children: [],
           },
-        ]
+        ],
       },
       {
         name: 'Children 3',
@@ -90,9 +110,9 @@ export const data: IClient[] = [
         phoneNo: '3 - +1 628 291 2098',
         companyName: '3 -',
         address: '3 - 169 11th Street, 94103 San Francisco',
-        children: []
+        children: [],
       },
-    ]
+    ],
   },
   {
     name: 'PiedPiper',
@@ -101,7 +121,7 @@ export const data: IClient[] = [
     phoneNo: '+1 628 291 2098',
     companyName: '',
     address: '169 11th Street, 94103 San Francisco',
-    children: []
+    children: [],
   },
   {
     name: 'PiedPiper',
@@ -118,7 +138,7 @@ export const data: IClient[] = [
         phoneNo: '21 - +1 628 291 2098',
         companyName: '21 -',
         address: '21 - 169 11th Street, 94103 San Francisco',
-        children: []
+        children: [],
       },
       {
         name: 'Children 31',
@@ -127,9 +147,9 @@ export const data: IClient[] = [
         phoneNo: '31 - +1 628 291 2098',
         companyName: '31 -',
         address: '31 - 169 11th Street, 94103 San Francisco',
-        children: []
+        children: [],
       },
-    ]
+    ],
   },
   {
     name: 'PiedPiper',
@@ -138,7 +158,7 @@ export const data: IClient[] = [
     phoneNo: '+1 628 291 2098',
     companyName: 'Alphabet',
     address: '169 11th Street, 94103 San Francisco',
-    children: []
+    children: [],
   },
   {
     name: 'Florin Galan',
@@ -147,7 +167,7 @@ export const data: IClient[] = [
     phoneNo: '+1 628 291 2098',
     companyName: 'Alphabet',
     address: '169 11th Street, 94103 San Francisco',
-    children: []
+    children: [],
   },
   {
     name: 'March Andreesen',
@@ -164,7 +184,7 @@ export const data: IClient[] = [
         phoneNo: '21 - +1 628 291 2098',
         companyName: '21 -',
         address: '21 - 169 11th Street, 94103 San Francisco',
-        children: []
+        children: [],
       },
       {
         name: 'Space X',
@@ -173,9 +193,9 @@ export const data: IClient[] = [
         phoneNo: '31 - +1 628 291 2098',
         companyName: '31 -',
         address: '31 - 169 11th Street, 94103 San Francisco',
-        children: []
+        children: [],
       },
-    ]
+    ],
   },
   {
     name: 'Ben Horowitz',
@@ -184,7 +204,6 @@ export const data: IClient[] = [
     phoneNo: '+1 628 291 2098',
     companyName: 'Alphabet',
     address: '169 11th Street, 94103 San Francisco',
-    children: []
+    children: [],
   },
 ];
-  

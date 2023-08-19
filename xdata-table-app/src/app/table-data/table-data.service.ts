@@ -8,9 +8,9 @@ import { data } from 'src/api/mock/mock-data';
   providedIn: 'root',
 })
 export class TableDataService {
-	private mockData = data;
+  private mockData = data;
 
   getClients(): Observable<IClient[]> {
-	return of(this.mockData);
+    return of(this.mockData);
   }
 }

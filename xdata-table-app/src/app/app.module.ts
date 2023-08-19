@@ -6,15 +6,9 @@ import { TableDataComponent } from './table-data/table-data.component';
 import { CommonModule } from '@angular/common';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    TableDataComponent,
-  ],
-  imports: [
-    BrowserModule,
-    CommonModule
-  ],
+  declarations: [AppComponent, TableDataComponent],
+  imports: [BrowserModule, CommonModule],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

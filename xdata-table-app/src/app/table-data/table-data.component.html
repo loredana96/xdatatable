@@ -1,34 +1,40 @@
 <table class="table table-hover">
-    <thead class="table-info">
-      <tr>
-        <th scope="col">Name</th>
-        <th scope="col">Type</th>
-        <th scope="col">Email</th>
-        <th scope="col">Phone</th>
-        <th scope="col">Company Name</th>
-        <th scope="col">Address</th>
-      </tr>
-    </thead>
-    <tbody>
-        <ng-container *ngFor="let client of clients">
-            <tr>
-              <td>{{ client.name }}</td>
-              <td>{{ client.type }}</td>
-              <td>{{ client.email }}</td>
-              <td>{{ client.phoneNo }}</td>
-              <td>{{ client.companyName }}</td>
-              <td>{{ client.address }}</td>
-            </tr>
-            <ng-container *ngIf="client.children">
-              <tr *ngFor="let child of client.children">
-                <td>{{ child.name }}</td>
-                <td>{{ child.type }}</td>
-                <td>{{ child.email }}</td>
-                <td>{{ child.phoneNo }}</td>
-                <td>{{ child.companyName }}</td>
-                <td>{{ child.address }}</td>
-              </tr>
-            </ng-container>
-          </ng-container>
-    </tbody>
-  </table>
+  <thead class="table-info">
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Type</th>
+      <th scope="col">Email</th>
+      <th scope="col">Phone</th>
+      <th scope="col">Company Name</th>
+      <th scope="col">Address</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let client of clients">
+      <ng-container
+        *ngTemplateOutlet="rowTemplate; context: { client: client, padding: 0 }"
+      ></ng-container>
+    </ng-container>
+  </tbody>
+</table>
+
+<ng-template #rowTemplate let-client="client" let-padding="padding">
+  <tr>
+    <td [ngStyle]="{ 'padding-left': paddingNestedLevel(padding) }">
+      {{ client.name }}
+    </td>
+    <td>{{ client.type }}</td>
+    <td>{{ client.email }}</td>
+    <td>{{ client.phoneNo }}</td>
+    <td>{{ client.companyName }}</td>
+    <td>{{ client.address }}</td>
+  </tr>
+  <ng-container *ngFor="let child of client.children">
+    <ng-container
+      *ngTemplateOutlet="
+        rowTemplate;
+        context: { client: child, padding: padding + 14 }
+      "
+    ></ng-container>
+  </ng-container>
+</ng-template>
