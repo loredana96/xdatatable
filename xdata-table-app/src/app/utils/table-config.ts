@@ -8,6 +8,7 @@ export interface ITableColumn {
 export interface ITableHeader {
   columns: ITableColumn[];
   isSelected: boolean;
+  shouldDeleteMultiple: boolean;
 }
 
 export interface ITableRow {

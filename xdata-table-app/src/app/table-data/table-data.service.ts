@@ -55,6 +55,7 @@ export class TableDataService {
     const tableHeader: ITableHeader = {
       columns: tableColumns,
       isSelected: false,
+      shouldDeleteMultiple: false,
     };
 
     // Step 3: Build the rows.
@@ -159,11 +160,11 @@ export class TableDataService {
   }
 
   checkIfAllRowsSelected(rows: ITableRow[]): boolean {
-    let checkedAllRows = true; // Assume all rows are initially selected
+    let checkedAllRows = true;
 
     for (const row of rows) {
       if (!row.isSelected) {
-        checkedAllRows = false; // If any row is not selected, update the flag
+        checkedAllRows = false;
         break; // Exit the loop, no need to continue checking
       }
 
@@ -176,5 +177,21 @@ export class TableDataService {
       }
     }
     return checkedAllRows;
+  }
+
+  checkIfAtLeastOneRowSelected(rows: ITableRow[]): boolean {
+    for (const row of rows) {
+      if (row.isSelected) {
+        return true;
+      }
+
+      if (row.children) {
+        if (this.checkIfAtLeastOneRowSelected(row.children)) {
+          return true;
+        }
+      }
+    }
+
+    return false;
   }
 }
