@@ -7,3 +7,11 @@ export interface IClient {
   address: string;
   children: IClient[];
 }
+
+export type ClientTableKeys =
+  | 'name'
+  | 'type'
+  | 'email'
+  | 'phoneNo'
+  | 'companyName'
+  | 'address';
