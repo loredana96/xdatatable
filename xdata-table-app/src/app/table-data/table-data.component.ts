@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { IClient } from '../utils/client.interface';
 import { TableDataService } from './table-data.service';
 import { Subscription, map } from 'rxjs';
-import { ITableConfig, ITableRow } from './table-config';
+import { ITableConfig, ITableRow } from '../utils/table-config';
 
 @Component({
   selector: 'app-table-data',
@@ -16,6 +16,7 @@ export class TableDataComponent implements OnInit, OnDestroy {
   clients: IClient[] = [];
   tableConfig?: ITableConfig;
   expandableIconClass: string = '';
+  allRowsSelected?: boolean;
 
   constructor(private tableDataService: TableDataService) {}
 
@@ -56,5 +57,22 @@ export class TableDataComponent implements OnInit, OnDestroy {
     } else {
       return 'bi bi-arrow-down-short';
     }
+  }
+
+  selectRow(row: ITableRow) {
+    row.isSelected = !row.isSelected;
+    this.allRowsSelected = this.tableDataService.checkIfAllRowsSelected(
+      this.tableConfig!.rows
+    );
+  }
+
+  selectAllRows(event: any) {
+    const selected = event.target.checked;
+    if (!this.tableConfig) return;
+    const rows = this.tableDataService.selectAll(
+      selected,
+      this.tableConfig.rows ?? []
+    );
+    this.tableConfig.rows = rows;
   }
 }

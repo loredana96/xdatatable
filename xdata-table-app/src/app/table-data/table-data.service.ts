@@ -10,7 +10,7 @@ import {
   ITableConfig,
   ITableHeader,
   ITableRow,
-} from './table-config';
+} from '../utils/table-config';
 
 @Injectable({
   providedIn: 'root',
@@ -54,13 +54,14 @@ export class TableDataService {
     // Step 2: build the table header
     const tableHeader: ITableHeader = {
       columns: tableColumns,
+      isSelected: false,
     };
 
     // Step 3: Build the rows.
     // 3.1: for each client, we need to create a row.
     // 3.1.1: for each table column, we need to extract the value for the "rawKey" property out of the client model and build a cell with it
     // 3.2. build the row using the cells built at 3.1.1 and return the row.
-    const buildRow = (client: IClient): ITableRow => {
+    const buildRow = (client: IClient, level: number): ITableRow => {
       const cells: ITableCell[] = tableColumns.map((tc) => {
         return {
           id: uuidv4(),
@@ -73,13 +74,17 @@ export class TableDataService {
       const row: ITableRow = {
         id: uuidv4(),
         cells: cells,
-        children: client.children.map((childClient) => buildRow(childClient)),
+        children: client.children.map((childClient) =>
+          buildRow(childClient, level + 1)
+        ),
         isCollapsed: true,
+        isSelected: false,
+        level,
       };
       return row;
     };
 
-    const rows: ITableRow[] = clients.map((client) => buildRow(client));
+    const rows: ITableRow[] = clients.map((client) => buildRow(client, 0));
 
     // Step 4: Build the final table config
     const tableConfig: ITableConfig = {
@@ -141,5 +146,35 @@ export class TableDataService {
       tableConfig
     );
     return mutatedConfig;
+  }
+
+  selectAll(isSelected: boolean, rows: ITableRow[]): ITableRow[] {
+    return rows.map((row) => {
+      return {
+        ...row,
+        isSelected,
+        children: this.selectAll(isSelected, row.children),
+      };
+    });
+  }
+
+  checkIfAllRowsSelected(rows: ITableRow[]): boolean {
+    let checkedAllRows = true; // Assume all rows are initially selected
+
+    for (const row of rows) {
+      if (!row.isSelected) {
+        checkedAllRows = false; // If any row is not selected, update the flag
+        break; // Exit the loop, no need to continue checking
+      }
+
+      // Recursively check child rows if they exist
+      if (row.children) {
+        checkedAllRows = this.checkIfAllRowsSelected(row.children);
+        if (!checkedAllRows) {
+          break; // Exit the loop if any child row is not selected
+        }
+      }
+    }
+    return checkedAllRows;
   }
 }

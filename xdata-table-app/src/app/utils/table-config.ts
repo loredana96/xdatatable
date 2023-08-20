@@ -1,4 +1,4 @@
-import { ClientTableKeys } from '../utils/client.interface';
+import { ClientTableKeys } from './client.interface';
 
 export interface ITableColumn {
   name: string;
@@ -7,6 +7,7 @@ export interface ITableColumn {
 
 export interface ITableHeader {
   columns: ITableColumn[];
+  isSelected: boolean;
 }
 
 export interface ITableRow {
@@ -14,6 +15,8 @@ export interface ITableRow {
   cells: ITableCell[];
   children: ITableRow[];
   isCollapsed: boolean;
+  isSelected: boolean;
+  level: number;
 }
 
 export interface ITableCell {
