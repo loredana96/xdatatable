@@ -1,15 +1,27 @@
+/* Buttons */
 .expand-button {
   border: none;
   background: none;
-}
-
-.table td {
-  max-width: 100px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
+/* Table Cells */
+.table td,
+.table th {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+/* Table Header Cells */
+.table thead th {
+  border-right: 1px solid #4c83ba;
+}
+
+/* Resize Directive */
 [appResizeColumn] {
   position: relative;
   overflow: hidden;
