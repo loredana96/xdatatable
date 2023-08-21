@@ -36,7 +36,7 @@
 </table>
 
 <ng-template #rowTemplate let-tableRow="tableRow" let-padding="padding">
-  <tr>
+  <tr class="table-row">
     <td scope="cell">
       <input
         type="checkbox"
@@ -64,7 +64,22 @@
         </button>
       </td>
     </ng-container>
-    <td scope="cell"></td>
+    <td scope="cell">
+      <div class="actions-cell">
+        <button
+          class="action-button"
+          *ngIf="tableRow.editAction && !atLeastOneCheckboxIsSelected()"
+        >
+          <i class="bi bi-pencil-square"></i>
+        </button>
+        <button
+          class="action-button"
+          *ngIf="tableRow.deleteAction && !atLeastOneCheckboxIsSelected()"
+        >
+          <i class="bi bi-trash3"></i>
+        </button>
+      </div>
+    </td>
   </tr>
   <ng-container *ngIf="!tableRow.isCollapsed">
     <ng-container *ngFor="let child of tableRow.children">

@@ -18,6 +18,8 @@ export interface ITableRow {
   isCollapsed: boolean;
   isSelected: boolean;
   level: number;
+  editAction: boolean;
+  deleteAction: boolean;
 }
 
 export interface ITableCell {

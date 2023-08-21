@@ -7,6 +7,19 @@
   text-overflow: ellipsis;
 }
 
+.action-button {
+  display: none;
+}
+.table-hover tbody tr:hover .action-button {
+  display: block;
+  border: none;
+}
+
+/* Table Row */
+.table-row {
+  height: 45px;
+}
+
 /* Table Cells */
 .table td,
 .table th {
@@ -14,6 +27,12 @@
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: center;
+}
+
+.actions-cell {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }
 
 /* Table Header Cells */

@@ -81,6 +81,8 @@ export class TableDataService {
         isCollapsed: true,
         isSelected: false,
         level,
+        deleteAction: true,
+        editAction: level === 0 ? true : false,
       };
       return row;
     };
