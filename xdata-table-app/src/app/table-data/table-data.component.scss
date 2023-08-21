@@ -2,3 +2,26 @@
   border: none;
   background: none;
 }
+
+.table td {
+  max-width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+[appResizeColumn] {
+  position: relative;
+  overflow: hidden;
+  cursor: col-resize;
+}
+
+[appResizeColumn]::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -5px;
+  bottom: 0;
+  width: 10px;
+  cursor: col-resize;
+}
