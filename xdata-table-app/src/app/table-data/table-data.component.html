@@ -17,8 +17,9 @@
       <th scope="col">
         <button
           type="button"
-          [disabled]="!showDeleteMultipleButton()"
-          class="btn btn-info"
+          [disabled]="!atLeastOneCheckboxIsSelected()"
+          type="button"
+          class="btn btn-outline-dark"
         >
           Delete multiple
         </button>

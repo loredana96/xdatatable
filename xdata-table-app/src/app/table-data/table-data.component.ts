@@ -64,7 +64,7 @@ export class TableDataComponent implements OnInit, OnDestroy {
     this.allRowsSelected = this.tableDataService.checkIfAllRowsSelected(
       this.tableConfig!.rows
     );
-    this.showDeleteMultipleButton();
+    this.atLeastOneCheckboxIsSelected();
   }
 
   selectAllRows(event: any) {
@@ -75,10 +75,10 @@ export class TableDataComponent implements OnInit, OnDestroy {
       this.tableConfig.rows ?? []
     );
     this.tableConfig.rows = rows;
-    this.showDeleteMultipleButton();
+    this.atLeastOneCheckboxIsSelected();
   }
 
-  showDeleteMultipleButton(): boolean {
+  atLeastOneCheckboxIsSelected(): boolean {
     if (!this.tableConfig) return false;
     const atLeastOneRowSelected =
       this.tableDataService.checkIfAtLeastOneRowSelected(this.tableConfig.rows);

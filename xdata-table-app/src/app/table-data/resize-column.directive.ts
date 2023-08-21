@@ -1,9 +1,17 @@
-import { Directive, ElementRef, HostListener, Renderer2 } from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  HostListener,
+  Input,
+  Renderer2,
+} from '@angular/core';
 
 @Directive({
   selector: '[appResizeColumn]',
 })
 export class ResizeColumnDirective {
+  @Input() minWidth = 200; // Default minimum width value
+
   private resizing = false;
 
   constructor(private el: ElementRef, private renderer: Renderer2) {}
@@ -19,7 +27,10 @@ export class ResizeColumnDirective {
     const mouseMoveListener = (e: MouseEvent) => {
       if (!this.resizing) return;
 
-      const newWidth = startWidth + (e.clientX - startX);
+      const newWidth = Math.max(
+        startWidth + (e.clientX - startX),
+        this.minWidth
+      );
       this.renderer.setStyle(cell, 'width', newWidth + 'px');
     };
 
