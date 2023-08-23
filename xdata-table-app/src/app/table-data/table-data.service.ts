@@ -197,25 +197,35 @@ export class TableDataService {
     return false;
   }
 
-  searchRecursively(value: string, rows: ITableRow[]): ITableRow[] {
-    let matchedRows: ITableRow[] = [];
+  searchRecursively(
+    value: string,
+    rows: ITableRow[],
+    parentRows: ITableRow[] = []
+  ): ITableRow[] {
+    const matchedRows: ITableRow[] = [];
 
     for (const row of rows) {
+      // Create an array of child row along with its parent rows
+      const childWithParents = [...parentRows, row];
+
       if (
         row.cells[0].value
           .toString()
           .toLowerCase()
           .includes(value.toLowerCase())
       ) {
-        matchedRows.push(row);
+        // If the row matches the search value, add the child with its parents
+        matchedRows.push(...childWithParents);
       }
-
-      const matchedChildren = this.searchRecursively(value, row.children);
+      // Recursively search the children of the current row
+      const matchedChildren = this.searchRecursively(
+        value,
+        row.children,
+        childWithParents
+      );
       matchedRows.push(...matchedChildren);
     }
-    if (value.length === 0) {
-      matchedRows = [];
-    }
+
     return matchedRows;
   }
 
