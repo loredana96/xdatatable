@@ -42,6 +42,6 @@ export interface ITableConfig {
 }
 
 // Expand the Table Supported keys with the model defined
-// keys when needed. This solution works with union types and
+// when needed. This solution works with union types and
 // it's also scalable.
 export type ITableSupportedKeys = ClientTableKeys;

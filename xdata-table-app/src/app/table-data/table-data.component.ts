@@ -1,7 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { IClient } from '../utils/client.interface';
 import { TableDataService } from './table-data.service';
-import { Subscription, map } from 'rxjs';
+import {
+  Subject,
+  Subscription,
+  debounceTime,
+  distinctUntilChanged,
+  map,
+} from 'rxjs';
 import { ITableConfig, ITableRow } from '../utils/table-config';
 
 @Component({
@@ -14,9 +20,14 @@ export class TableDataComponent implements OnInit, OnDestroy {
   errorMessage = '';
 
   clients: IClient[] = [];
+
+  /** This table config is the UNFILTERED original set of data. */
+  originalTableConfig?: ITableConfig;
   tableConfig?: ITableConfig;
   expandableIconClass: string = '';
   allRowsSelected?: boolean;
+  searchKeyword: string = '';
+  private searchInputChanged = new Subject<string>();
 
   constructor(private tableDataService: TableDataService) {}
 
@@ -31,9 +42,32 @@ export class TableDataComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (tableConfig) => {
           this.tableConfig = tableConfig;
+          this.originalTableConfig = this.tableConfig;
           console.log(this.tableConfig);
         },
       });
+
+    this.searchInputChanged
+      .pipe(debounceTime(300), distinctUntilChanged())
+      .subscribe((value) => {
+        this.searchDebounceHandler(value);
+      });
+  }
+
+  searchDebounceHandler(value: string) {
+    if (!this.originalTableConfig) {
+      return;
+    }
+
+    if (value.length === 0) {
+      this.tableConfig = this.originalTableConfig;
+    } else {
+      this.tableDataService
+        .searchRows(value, this.originalTableConfig!)
+        .subscribe((tableConfig) => {
+          this.tableConfig = tableConfig;
+        });
+    }
   }
 
   ngOnDestroy(): void {
@@ -53,9 +87,9 @@ export class TableDataComponent implements OnInit, OnDestroy {
 
   getIconForExpandableRow(tableRow: ITableRow): string {
     if (tableRow.isCollapsed) {
-      return 'bi bi-arrow-right-short';
+      return 'bi bi-arrow-right-short'; // the class for icon used while row is collapsed
     } else {
-      return 'bi bi-arrow-down-short';
+      return 'bi bi-arrow-down-short'; // the class used for the icon while row is expanded
     }
   }
 
@@ -83,5 +117,10 @@ export class TableDataComponent implements OnInit, OnDestroy {
     const atLeastOneRowSelected =
       this.tableDataService.checkIfAtLeastOneRowSelected(this.tableConfig.rows);
     return atLeastOneRowSelected;
+  }
+
+  onInputChange(event: any): void {
+    const searchKeyword = event.target.value;
+    this.searchInputChanged.next(searchKeyword);
   }
 }

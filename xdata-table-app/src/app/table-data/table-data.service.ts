@@ -196,4 +196,38 @@ export class TableDataService {
 
     return false;
   }
+
+  searchRecursively(value: string, rows: ITableRow[]): ITableRow[] {
+    let matchedRows: ITableRow[] = [];
+
+    for (const row of rows) {
+      if (
+        row.cells[0].value
+          .toString()
+          .toLowerCase()
+          .includes(value.toLowerCase())
+      ) {
+        matchedRows.push(row);
+      }
+
+      const matchedChildren = this.searchRecursively(value, row.children);
+      matchedRows.push(...matchedChildren);
+    }
+    if (value.length === 0) {
+      matchedRows = [];
+    }
+    return matchedRows;
+  }
+
+  searchRows(
+    value: string,
+    tableConfig: ITableConfig
+  ): Observable<ITableConfig> {
+    const searchedRows = this.searchRecursively(value, tableConfig.rows);
+    const searchedTableConfig: ITableConfig = {
+      ...tableConfig,
+      rows: searchedRows,
+    };
+    return of(searchedTableConfig);
+  }
 }
