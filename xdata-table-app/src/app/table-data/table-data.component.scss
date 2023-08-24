@@ -1,0 +1,92 @@
+/* Search */
+.search-container {
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.input-search {
+  width: 40%;
+  border-radius: 20px;
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+}
+
+/* Buttons */
+.expand-button {
+  border: none;
+  background: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.action-button {
+  display: none;
+}
+
+.table-hover tbody tr:hover .action-button {
+  display: block;
+  border: none;
+}
+
+.header-button {
+  border-radius: 20px;
+}
+
+.form-check-input:checked {
+  background-color: black !important;
+  border-color: black;
+}
+
+.form-check-input::after {
+  outline: none;
+}
+
+/* Table */
+.table-container {
+  max-height: 500px; /* Set the desired height here */
+  overflow-y: auto;
+}
+
+/* Table Row */
+.table-row {
+  height: 45px;
+}
+
+/* Table Cells */
+.table td,
+.table th {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+.actions-cell {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+/* Table Header Cells */
+.table thead th {
+  border-right: 1px solid #7c808741;
+}
+
+/* Resize Directive */
+[appResizeColumn] {
+  position: relative;
+  overflow: hidden;
+  cursor: col-resize;
+}
+
+[appResizeColumn]::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -5px;
+  bottom: 0;
+  width: 10px;
+  cursor: col-resize;
+}

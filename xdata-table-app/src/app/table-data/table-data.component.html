@@ -1,0 +1,109 @@
+<div class="xdatatable-container">
+  <div class="search-container">
+    <input
+      class="input-search"
+      type="search"
+      placeholder="Search by name"
+      aria-label="Search"
+      [value]="searchKeyword"
+      (input)="onInputChange($event)"
+    />
+  </div>
+  <div class="table-container" (scroll)="onTableScroll($event)">
+    <table class="table table-hover">
+      <thead class="table-light">
+        <tr>
+          <th appResizeColumn scope="col">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value="tableHeader"
+              id="selectAll"
+              [checked]="allRowsSelected"
+              (change)="selectAllRows($event)"
+            />
+          </th>
+          <ng-container *ngFor="let column of tableConfig?.header?.columns">
+            <th appResizeColumn scope="col">{{ column.name }}</th>
+          </ng-container>
+          <th scope="col">
+            <button
+              type="button"
+              [disabled]="!atLeastOneCheckboxIsSelected()"
+              type="button"
+              class="btn btn-outline-dark header-button"
+            >
+              Delete multiple
+            </button>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let tableRow of tableConfig?.rows">
+          <ng-container
+            *ngTemplateOutlet="rowTemplate; context: { tableRow, padding: 0 }"
+          ></ng-container>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #rowTemplate let-tableRow="tableRow" let-padding="padding">
+    <tr class="table-row">
+      <td scope="cell">
+        <input
+          class="form-check-input checkbox"
+          type="checkbox"
+          value="tableRow"
+          id="rowSelection"
+          [checked]="tableRow.isSelected"
+          (click)="selectRow(tableRow)"
+        />
+      </td>
+      <ng-container *ngFor="let tableCell of tableRow.cells">
+        <td
+          [ngStyle]="{
+            'padding-left': tableCell.shouldPad
+              ? paddingNestedLevel(padding)
+              : '0px'
+          }"
+        >
+          {{ tableCell.value }}
+          <button
+            class="expand-button"
+            *ngIf="tableCell.showCollapseIndicator"
+            (click)="clickedRow(tableRow.id)"
+          >
+            <i [ngClass]="getIconForExpandableRow(tableRow)"></i>
+          </button>
+        </td>
+      </ng-container>
+      <td scope="cell">
+        <div class="actions-cell">
+          <button
+            class="action-button"
+            *ngIf="tableRow.editAction && !atLeastOneCheckboxIsSelected()"
+          >
+            <i class="bi bi-pencil-square"></i>
+          </button>
+          <button
+            class="action-button"
+            *ngIf="tableRow.deleteAction && !atLeastOneCheckboxIsSelected()"
+          >
+            <i class="bi bi-trash3"></i>
+          </button>
+        </div>
+      </td>
+    </tr>
+    <ng-container *ngIf="!tableRow.isCollapsed">
+      <ng-container *ngFor="let child of tableRow.children">
+        <ng-container
+          *ngTemplateOutlet="
+            rowTemplate;
+            context: { tableRow: child, padding: padding + 14 }
+          "
+        ></ng-container>
+      </ng-container>
+    </ng-container>
+  </ng-template>
+</div>
