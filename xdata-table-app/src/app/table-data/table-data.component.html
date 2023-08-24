@@ -9,42 +9,44 @@
       (input)="onInputChange($event)"
     />
   </div>
-  <table class="table table-hover">
-    <thead class="table-light">
-      <tr>
-        <th appResizeColumn scope="col">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            value="tableHeader"
-            id="selectAll"
-            [checked]="allRowsSelected"
-            (change)="selectAllRows($event)"
-          />
-        </th>
-        <ng-container *ngFor="let column of tableConfig?.header?.columns">
-          <th appResizeColumn scope="col">{{ column.name }}</th>
+  <div class="table-container" (scroll)="onTableScroll($event)">
+    <table class="table table-hover">
+      <thead class="table-light">
+        <tr>
+          <th appResizeColumn scope="col">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value="tableHeader"
+              id="selectAll"
+              [checked]="allRowsSelected"
+              (change)="selectAllRows($event)"
+            />
+          </th>
+          <ng-container *ngFor="let column of tableConfig?.header?.columns">
+            <th appResizeColumn scope="col">{{ column.name }}</th>
+          </ng-container>
+          <th scope="col">
+            <button
+              type="button"
+              [disabled]="!atLeastOneCheckboxIsSelected()"
+              type="button"
+              class="btn btn-outline-dark header-button"
+            >
+              Delete multiple
+            </button>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let tableRow of tableConfig?.rows">
+          <ng-container
+            *ngTemplateOutlet="rowTemplate; context: { tableRow, padding: 0 }"
+          ></ng-container>
         </ng-container>
-        <th scope="col">
-          <button
-            type="button"
-            [disabled]="!atLeastOneCheckboxIsSelected()"
-            type="button"
-            class="btn btn-outline-dark header-button"
-          >
-            Delete multiple
-          </button>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <ng-container *ngFor="let tableRow of tableConfig?.rows">
-        <ng-container
-          *ngTemplateOutlet="rowTemplate; context: { tableRow, padding: 0 }"
-        ></ng-container>
-      </ng-container>
-    </tbody>
-  </table>
+      </tbody>
+    </table>
+  </div>
 
   <ng-template #rowTemplate let-tableRow="tableRow" let-padding="padding">
     <tr class="table-row">

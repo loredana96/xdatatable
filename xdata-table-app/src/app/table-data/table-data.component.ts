@@ -1,5 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { IClient } from '../utils/client.interface';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { TableDataService } from './table-data.service';
 import {
   Subject,
@@ -16,24 +15,28 @@ import { ITableConfig, ITableRow } from '../utils/table-config';
   styleUrls: ['./table-data.component.scss'],
 })
 export class TableDataComponent implements OnInit, OnDestroy {
-  subscription!: Subscription;
-  errorMessage = '';
+  getClientsSubscription!: Subscription;
 
-  clients: IClient[] = [];
-
-  /** This table config is the UNFILTERED original set of data. */
-  originalTableConfig?: ITableConfig;
+  originalTableConfig?: ITableConfig; //This table config is the UNFILTERED original set of data.
   tableConfig?: ITableConfig;
   expandableIconClass: string = '';
   allRowsSelected?: boolean;
   searchKeyword: string = '';
   private searchInputChanged = new Subject<string>();
 
+  // lazy load table declarations
+  inifinityLoadLimitStart: number = 0;
+  infinityLimit: number = 10;
+  infinityLoadLimitEnd: number =
+    this.infinityLimit + this.inifinityLoadLimitStart;
+  infinityBuffer = 10;
+  selectedRowIndex?: number;
+
   constructor(private tableDataService: TableDataService) {}
 
   ngOnInit(): void {
-    this.subscription = this.tableDataService
-      .getClients()
+    this.getClientsSubscription = this.tableDataService
+      .getClients(this.inifinityLoadLimitStart, this.infinityLimit)
       .pipe(
         map((clients) =>
           this.tableDataService.adaptIClientToTableConfig(clients)
@@ -43,7 +46,6 @@ export class TableDataComponent implements OnInit, OnDestroy {
         next: (tableConfig) => {
           this.tableConfig = tableConfig;
           this.originalTableConfig = this.tableConfig;
-          console.log(this.tableConfig);
         },
       });
 
@@ -71,7 +73,7 @@ export class TableDataComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.getClientsSubscription.unsubscribe();
   }
 
   paddingNestedLevel(size: number) {
@@ -122,5 +124,35 @@ export class TableDataComponent implements OnInit, OnDestroy {
   onInputChange(event: any): void {
     const searchKeyword = event.target.value;
     this.searchInputChanged.next(searchKeyword);
+  }
+
+  @HostListener('window:scroll', ['$event'])
+  onTableScroll(e: any) {
+    const tableViewHeight = e.target.offsetHeight; //viewport
+    const tableScrollHeight = e.target.scrollHeight; // length of the table
+    const scrollLocation = e.target.scrollTop; // how far user scrolled
+    const limit = tableScrollHeight - tableViewHeight - this.infinityBuffer;
+
+    if (scrollLocation > limit) {
+      this.updateIndex();
+      this.getClientsSubscription = this.tableDataService
+        .getClients(this.inifinityLoadLimitStart, this.infinityLoadLimitEnd)
+        .subscribe((clients) => {
+          if (clients.length > 0 && this.tableConfig) {
+            const newTableConfig =
+              this.tableDataService.adaptIClientToTableConfig(clients);
+            this.tableConfig = {
+              ...this.tableConfig,
+              rows: [...this.tableConfig.rows, ...newTableConfig.rows],
+            };
+          }
+        });
+    }
+  }
+
+  updateIndex() {
+    this.inifinityLoadLimitStart = this.infinityLoadLimitEnd;
+    this.infinityLoadLimitEnd =
+      this.infinityLimit + this.inifinityLoadLimitStart;
   }
 }

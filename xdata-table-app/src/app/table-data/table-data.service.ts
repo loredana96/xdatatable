@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, delay, of } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 
 import { IClient } from '../utils/client.interface';
@@ -18,8 +18,8 @@ import {
 export class TableDataService {
   private mockData = data;
 
-  getClients(): Observable<IClient[]> {
-    return of(this.mockData);
+  getClients(start: number, limit: number): Observable<IClient[]> {
+    return of(this.mockData.slice(start, limit));
   }
 
   adaptIClientToTableConfig(clients: IClient[]): ITableConfig {
